@@ -24,7 +24,26 @@
   "klook": {
     "url": "https://www.klook.com/zh-TW/activity/85862-kaohsiung-shoushan-zoo/",
     "label": "壽山動物園門票",
-    "note": "線上購買電子票，入園時在閘門掃描 QR code 即可，省去現場購票步驟。"
+    "note": "線上購買電子票，入園時在閘門掃描 QR code 即可，省去現場購票步驟。",
+    "prices": [
+      {
+        "type": "全票",
+        "price": "NT$40",
+        "note": "一般成人"
+      },
+      {
+        "type": "半票",
+        "price": "NT$20",
+        "note": "6歲以上未滿18歲"
+      },
+      {
+        "type": "免票",
+        "price": "免費",
+        "note": "未滿6歲、高雄國小以下、65歲以上、身障+1"
+      }
+    ],
+    "price_source": "官方公告票價",
+    "price_date": "2026年11月"
   },
   "images": [
     {

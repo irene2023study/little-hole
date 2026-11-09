@@ -24,7 +24,31 @@
   "klook": {
     "url": "https://www.klook.com/zh-TW/activity/90506-british-consulate-takow-kaohsiung/",
     "label": "打狗英國領事館門票",
-    "note": "電子票線上預訂，可一併比較單純門票與英式下午茶套票方案。"
+    "note": "電子票線上預訂，可一併比較單純門票與英式下午茶套票方案。",
+    "prices": [
+      {
+        "type": "全票",
+        "price": "NT$99",
+        "note": "2026/7/2起恢復原價"
+      },
+      {
+        "type": "優待票",
+        "price": "NT$49",
+        "note": "高雄市民、在學學生、20人以上團體"
+      },
+      {
+        "type": "優惠票",
+        "price": "NT$39",
+        "note": "1–未滿6歲、65歲以上、志工、市低收"
+      },
+      {
+        "type": "免費",
+        "price": "免費",
+        "note": "未滿1歲、身障+陪伴1人、導遊"
+      }
+    ],
+    "price_source": "官方公告票價",
+    "price_date": "2026年11月"
   },
   "images": [
     {

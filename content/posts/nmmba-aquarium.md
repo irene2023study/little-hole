@@ -24,7 +24,31 @@
   "klook": {
     "url": "https://www.klook.com/zh-TW/activity/4738-national-museum-marine-biology-aquarium-ticket-kenting/",
     "label": "海生館門票",
-    "note": "電子票線上預訂，旺季入館不用在售票口排隊。"
+    "note": "電子票線上預訂，旺季入館不用在售票口排隊。",
+    "prices": [
+      {
+        "type": "全票",
+        "price": "NT$450",
+        "note": "一般民眾"
+      },
+      {
+        "type": "優待票",
+        "price": "NT$250",
+        "note": "6歲以上且115cm以上學童、大學生等"
+      },
+      {
+        "type": "博愛票",
+        "price": "NT$225",
+        "note": "65歲以上"
+      },
+      {
+        "type": "免費",
+        "price": "免費",
+        "note": "115cm以下或未滿6歲、身障+1"
+      }
+    ],
+    "price_source": "官方公告票價",
+    "price_date": "2026年11月"
   },
   "images": [
     {

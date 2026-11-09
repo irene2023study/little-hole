@@ -24,7 +24,26 @@
   "klook": {
     "url": "https://www.klook.com/zh-TW/activity/40974-anping-tree-house-ticket-district-taiwan/",
     "label": "安平樹屋門票",
-    "note": "電子票入場，一張票就能逛樹屋與德記洋行。"
+    "note": "電子票入場，一張票就能逛樹屋與德記洋行。",
+    "prices": [
+      {
+        "type": "全票",
+        "price": "NT$70",
+        "note": "臺南市定古蹟統一票價"
+      },
+      {
+        "type": "半票",
+        "price": "NT$35",
+        "note": "學生、65歲以上等"
+      },
+      {
+        "type": "免費",
+        "price": "免費",
+        "note": "臺南市民、6歲以下、70歲以上、身障+1"
+      }
+    ],
+    "price_source": "官方公告票價",
+    "price_date": "2026年11月"
   },
   "images": [
     {

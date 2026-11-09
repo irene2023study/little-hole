@@ -24,7 +24,31 @@
   "klook": {
     "url": "https://www.klook.com/zh-TW/activity/76133-xiaoliuqiu-round-trip-ticket/",
     "label": "小琉球船票＋機車套票",
-    "note": "東港往返船票搭配島上機車租借，一次訂好，下船就能出發環島。"
+    "note": "東港往返船票搭配島上機車租借，一次訂好，下船就能出發環島。",
+    "prices": [
+      {
+        "type": "來回全票（東港↔白沙）",
+        "price": "NT$450",
+        "note": "滿12歲以上；東琉線"
+      },
+      {
+        "type": "來回半票",
+        "price": "NT$225",
+        "note": "3–未滿12歲"
+      },
+      {
+        "type": "三景點全票",
+        "price": "NT$120",
+        "note": "美人洞/山豬溝/烏鬼洞；團體$100"
+      },
+      {
+        "type": "三景點半票",
+        "price": "NT$80",
+        "note": "學生、軍警、65歲以上；未滿6歲免費"
+      }
+    ],
+    "price_source": "官方公告票價",
+    "price_date": "2026年11月"
   },
   "images": [
     {

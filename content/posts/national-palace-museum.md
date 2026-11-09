@@ -24,7 +24,31 @@
   "klook": {
     "url": "https://www.klook.com/zh-TW/activity/10136-national-palace-museum-ticket-package-taipei/",
     "label": "國立故宮博物院門票",
-    "note": "線上預訂電子票，到館直接入場，省下排隊買票的時間。"
+    "note": "線上預訂電子票，到館直接入場，省下排隊買票的時間。",
+    "prices": [
+      {
+        "type": "普通參觀券",
+        "price": "NT$350",
+        "note": "第一展覽館；團體10人以上NT$320"
+      },
+      {
+        "type": "優惠參觀券",
+        "price": "NT$150",
+        "note": "國人憑身分證件、永久居留、ISIC"
+      },
+      {
+        "type": "免費",
+        "price": "免費",
+        "note": "未滿18歲、本國學生、65歲以上國人、身障+1"
+      },
+      {
+        "type": "免費參觀日",
+        "price": "免費",
+        "note": "元旦、元宵、5/18、9/27、10/10"
+      }
+    ],
+    "price_source": "官方公告票價",
+    "price_date": "2026年11月"
   },
   "images": [
     {

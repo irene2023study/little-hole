@@ -24,7 +24,26 @@
   "klook": {
     "url": "https://www.klook.com/zh-TW/activity/8875-chimei-museum-permanent-exhibition-ticket-tainan/",
     "label": "奇美博物館門票",
-    "note": "常設展與特展票都能線上預訂，入口掃碼入館，旺季少排一段隊。"
+    "note": "常設展與特展票都能線上預訂，入口掃碼入館，旺季少排一段隊。",
+    "prices": [
+      {
+        "type": "全票",
+        "price": "NT$200",
+        "note": "常設展；特展另購"
+      },
+      {
+        "type": "優惠票",
+        "price": "NT$150",
+        "note": "7–22歲、65歲以上"
+      },
+      {
+        "type": "免費",
+        "price": "免費",
+        "note": "未滿7歲、臺南市民/學生、身障+1"
+      }
+    ],
+    "price_source": "官方公告票價",
+    "price_date": "2026年11月"
   },
   "images": [
     {

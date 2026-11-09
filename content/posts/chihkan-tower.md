@@ -24,7 +24,26 @@
   "klook": {
     "url": "https://www.klook.com/zh-TW/activity/42985-chihkan-tower-ticket-tainan/",
     "label": "赤崁樓門票",
-    "note": "先在線上買好電子票，入口直接掃碼進場，和古蹟巡禮行程搭配更順。"
+    "note": "先在線上買好電子票，入口直接掃碼進場，和古蹟巡禮行程搭配更順。",
+    "prices": [
+      {
+        "type": "全票",
+        "price": "NT$70",
+        "note": "一般民眾"
+      },
+      {
+        "type": "半票",
+        "price": "NT$35",
+        "note": "學生、軍警消、65歲以上、公立機關志工"
+      },
+      {
+        "type": "免費",
+        "price": "免費",
+        "note": "台南市民、6歲以下、70歲以上、身障+1"
+      }
+    ],
+    "price_source": "官方公告票價",
+    "price_date": "2026年11月"
   },
   "images": [
     {

@@ -24,7 +24,31 @@
   "klook": {
     "url": "https://www.klook.com/zh-TW/activity/1659-taipei-101-taipei/",
     "label": "台北101觀景台門票",
-    "note": "電子票線上預訂，現場不用再排售票隊伍，也能比較單票、101F 套票與快速通關方案。"
+    "note": "電子票線上預訂，現場不用再排售票隊伍，也能比較單票、101F 套票與快速通關方案。",
+    "prices": [
+      {
+        "type": "成人",
+        "price": "NT$600",
+        "note": "參觀89F、88F"
+      },
+      {
+        "type": "優待票",
+        "price": "NT$300",
+        "note": "學生、65歲以上、身障、軍警消"
+      },
+      {
+        "type": "101樓加價",
+        "price": "+NT$380",
+        "note": "每位至101F須加價；Skywalk套票NT$3,000"
+      },
+      {
+        "type": "免費",
+        "price": "免費",
+        "note": "115cm以下兒童；本國6歲以下憑證件"
+      }
+    ],
+    "price_source": "官方公告票價",
+    "price_date": "2026年11月"
   },
   "images": [
     {

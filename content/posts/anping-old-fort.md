@@ -24,7 +24,26 @@
   "klook": {
     "url": "https://www.klook.com/zh-TW/activity/41313-anping-old-fort-ticket-tainan/",
     "label": "安平古堡門票",
-    "note": "線上預訂電子票，入口出示 QR code 就能入場，假日省去排隊買票的時間。"
+    "note": "線上預訂電子票，入口出示 QR code 就能入場，假日省去排隊買票的時間。",
+    "prices": [
+      {
+        "type": "全票",
+        "price": "NT$70",
+        "note": "臺南市定古蹟統一票價"
+      },
+      {
+        "type": "半票",
+        "price": "NT$35",
+        "note": "學生、65歲以上等"
+      },
+      {
+        "type": "免費",
+        "price": "免費",
+        "note": "臺南市民、6歲以下、70歲以上、身障+1"
+      }
+    ],
+    "price_source": "官方公告票價",
+    "price_date": "2026年11月"
   },
   "images": [
     {

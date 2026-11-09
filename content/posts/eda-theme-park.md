@@ -24,7 +24,36 @@
   "klook": {
     "url": "https://www.klook.com/zh-TW/activity/3911-e-da-theme-park-ticket-kaohsiung/",
     "label": "義大遊樂世界門票",
-    "note": "線上預訂電子票常有優惠價，入園免排售票隊伍，也能比較單日票與套票方案。"
+    "note": "線上預訂電子票常有優惠價，入園免排售票隊伍，也能比較單日票與套票方案。",
+    "prices": [
+      {
+        "type": "全票",
+        "price": "NT$1,080",
+        "note": "19歲以上"
+      },
+      {
+        "type": "青少年票",
+        "price": "NT$880",
+        "note": "13–未滿19歲"
+      },
+      {
+        "type": "學童票",
+        "price": "NT$680",
+        "note": "6–12歲"
+      },
+      {
+        "type": "優待票",
+        "price": "NT$520",
+        "note": "3–5歲、60歲以上、身障"
+      },
+      {
+        "type": "免費",
+        "price": "免費",
+        "note": "未滿3歲或身高未滿90cm"
+      }
+    ],
+    "price_source": "官方公告票價",
+    "price_date": "2026年11月"
   },
   "images": [
     {

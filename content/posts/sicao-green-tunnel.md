@@ -24,7 +24,31 @@
   "klook": {
     "url": "https://www.klook.com/zh-TW/activity/53210-sicao-green-tunnel-tainan/",
     "label": "四草綠色隧道船票",
-    "note": "線上先買好船票，到四草大眾廟服務台換票就能搭船。"
+    "note": "線上先買好船票，到四草大眾廟服務台換票就能搭船。",
+    "prices": [
+      {
+        "type": "全票",
+        "price": "NT$200",
+        "note": "綠色隧道/台江航線同價"
+      },
+      {
+        "type": "優惠票",
+        "price": "NT$100",
+        "note": "國小學生"
+      },
+      {
+        "type": "愛心票",
+        "price": "NT$100",
+        "note": "身障持證，可陪同1位"
+      },
+      {
+        "type": "黑琵票",
+        "price": "NT$30",
+        "note": "0–6歲及80歲以上"
+      }
+    ],
+    "price_source": "官方公告票價",
+    "price_date": "2026年11月"
   },
   "images": [
     {

@@ -24,7 +24,31 @@
   "klook": {
     "url": "https://www.klook.com/zh-TW/activity/55898-kenting-forest-pass-taiwan/",
     "label": "墾丁國家森林遊樂區門票",
-    "note": "電子票線上預訂，也有搭配鵝鑾鼻公園的聯票方案可以比較。"
+    "note": "電子票線上預訂，也有搭配鵝鑾鼻公園的聯票方案可以比較。",
+    "prices": [
+      {
+        "type": "全票",
+        "price": "NT$150",
+        "note": "假日票價；平日 NT$100"
+      },
+      {
+        "type": "半票",
+        "price": "NT$75",
+        "note": "學生、軍警、7–12歲、縣民"
+      },
+      {
+        "type": "優待票",
+        "price": "NT$10",
+        "note": "65歲以上、3–6歲兒童"
+      },
+      {
+        "type": "免票",
+        "price": "免費",
+        "note": "0–2歲、身障+陪伴1人、志工"
+      }
+    ],
+    "price_source": "官方公告票價",
+    "price_date": "2026年11月"
   },
   "images": [
     {
