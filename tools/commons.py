@@ -61,7 +61,8 @@ def search(queries):
         for p in pages:
             i = info(p)
             if i["ok"] and p["imageinfo"][0]["width"] >= 1600:
-                print(f'{i["file"]} | {i["license"]} | {i["author"]} | {i["width"]}x{i["height"]}')
+                desc = strip_tags(p["imageinfo"][0].get("extmetadata", {}).get("ImageDescription", {}).get("value", ""))[:120]
+                print(f'{i["file"]} | {i["license"]} | {i["author"]} | {i["width"]}x{i["height"]} | {desc}')
 
 
 def resolve(titles):

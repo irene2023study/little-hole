@@ -6,6 +6,7 @@
   "url": "https://little-hole.com",
   "lang": "zh-Hant-TW",
   "klook_aid": "141112",
+  "ga4_id": "G-K85J1BG4R6",
   "countries": [
     {
       "slug": "taiwan",
@@ -18,6 +19,7 @@
         {"slug": "taichung", "name": "台中", "en": "Taichung", "intro": "氣候宜人的中部大城，文創園區與老建築新生的好去處。"},
         {"slug": "tainan", "name": "台南", "en": "Tainan", "intro": "台灣最古老的城市，古蹟、廟宇與小吃一步一景。"},
         {"slug": "kaohsiung", "name": "高雄", "en": "Kaohsiung", "intro": "港都高雄，海風、藝術特區與愛河夜景。"},
+        {"slug": "pingtung", "name": "屏東", "en": "Pingtung", "intro": "台灣最南端的國境之南，墾丁海岸、小琉球與恆春半島的熱帶風情。"},
         {"slug": "nantou", "name": "南投", "en": "Nantou", "intro": "台灣唯一不靠海的縣，卻有日月潭與合歡山。"},
         {"slug": "hualien", "name": "花蓮", "en": "Hualien", "intro": "太魯閣峽谷與太平洋海岸線，東台灣的壯闊。"}
       ]

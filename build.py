@@ -115,25 +115,68 @@ LOGO = ('<svg class="logo-mark" viewBox="0 0 40 40" aria-hidden="true">'
         '<ellipse cx="20" cy="25" rx="4.2" ry="5.4" fill="var(--paper)"/></svg>')
 
 
-def head(title, desc, path, image=None, extra=""):
+def jsonld(*objs):
+    """輸出 JSON-LD 結構化資料（跳脫 </ 避免提早結束 script）。"""
+    return "\n".join('<script type="application/ld+json">' + json.dumps(o, ensure_ascii=False).replace("</", "<\\/") + "</script>"
+                     for o in objs)
+
+
+def crumbs_ld(items, path):
+    """麵包屑的 BreadcrumbList 結構化資料；最後一層（目前頁）網址用 path。"""
+    return {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
+        {"@type": "ListItem", "position": i, "name": n, "item": SITE["url"] + (u or path)}
+        for i, (n, u) in enumerate(items, 1)]}
+
+
+def item_list_ld(posts):
+    return {"@context": "https://schema.org", "@type": "ItemList", "itemListElement": [
+        {"@type": "ListItem", "position": i, "url": SITE["url"] + p["url"], "name": p["title"]}
+        for i, p in enumerate(posts, 1)]}
+
+
+def short_name(p):
+    return p.get("place") or p["title"].split("｜")[0]
+
+
+def head(title, desc, path, image=None, extra="", og_type="website", noindex=False):
     full = f"{title}｜{SITE['name']}" if title != SITE["name"] else f"{SITE['name']}｜{SITE['tagline']}"
     url = SITE["url"] + path
-    og_img = f'<meta property="og:image" content="{E(image)}">' if image else ""
+    og_img = ""
+    if image:
+        og_img = (f'<meta property="og:image" content="{E(image["src"])}">\n'
+                  f'<meta property="og:image:width" content="{image["width"]}">\n'
+                  f'<meta property="og:image:height" content="{image["height"]}">\n'
+                  f'<meta property="og:image:alt" content="{E(image.get("alt") or image.get("caption", ""))}">\n'
+                  f'<meta name="twitter:image" content="{E(image["src"])}">')
+    robots = "noindex, follow" if noindex else "index, follow, max-image-preview:large"
+    verify = SITE.get("google_site_verification", "").strip()
+    verify = f'<meta name="google-site-verification" content="{E(verify)}">' if verify else ""
+    ga = SITE.get("ga4_id", "").strip()
+    ga = (f'<script async src="https://www.googletagmanager.com/gtag/js?id={E(ga)}"></script>\n'
+          f"<script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments);}}"
+          f"gtag('js',new Date());gtag('config',{json.dumps(ga)});</script>") if ga else ""
     return f"""<!doctype html>
 <html lang="{SITE['lang']}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+{ga}
 <title>{E(full)}</title>
 <meta name="description" content="{E(desc)}">
-<link rel="canonical" href="{E(url)}">
-<meta property="og:type" content="{'article' if extra else 'website'}">
+<meta name="robots" content="{robots}">
+{'' if noindex else f'<link rel="canonical" href="{E(url)}">'}
+{verify}
+<meta property="og:type" content="{og_type}">
+<meta property="og:locale" content="zh_TW">
 <meta property="og:site_name" content="{E(SITE['name'])}">
 <meta property="og:title" content="{E(full)}">
 <meta property="og:description" content="{E(desc)}">
 <meta property="og:url" content="{E(url)}">
 {og_img}
-<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:card" content="{'summary_large_image' if image else 'summary'}">
+<meta name="twitter:title" content="{E(full)}">
+<meta name="twitter:description" content="{E(desc)}">
+<link rel="alternate" type="application/atom+xml" title="{E(SITE['name'])}" href="/feed.xml">
 <meta name="theme-color" content="#2f5d50">
 <link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -193,7 +236,7 @@ def card(p, big=False):
     badge = '<span class="badge">可線上訂票</span>' if tag else ""
     return f"""<article class="card{' card-big' if big else ''}">
   <a href="{p['url']}" class="card-link">
-    <div class="card-img"><img src="{E(img['src'])}" alt="{E(img.get('alt',''))}" loading="lazy" width="{img['width']}" height="{img['height']}">{badge}</div>
+    <div class="card-img"><img src="{E(img['src'])}" alt="{E(img.get('alt') or img.get('caption', ''))}" loading="lazy" width="{img['width']}" height="{img['height']}">{badge}</div>
     <div class="card-body">
       <p class="kicker">{E(p['_country']['name'])}・{E(p['_city']['name'])}</p>
       <h3>{E(p['title'])}</h3>
@@ -234,27 +277,37 @@ def page_post(p, posts):
     c, ci = p["_country"], p["_city"]
     imgs = p["images"]
     info_rows = "".join(f"<div><dt>{E(k)}</dt><dd>{inline(v)}</dd></div>" for k, v in p.get("info", {}).items())
-    related = [x for x in posts if x is not p and x["country"] == p["country"]][:3]
+    # 相關文章：同城市優先，再補同國家
+    others = [x for x in posts if x is not p and x["country"] == p["country"]]
+    related = sorted(others, key=lambda x: x["city"] != p["city"])[:3]
     toc = re.findall(r"^## (.+)$", p["body"], re.M)
+    modified = p.get("updated", p["date"])
+    crumbs = [("首頁", "/"), (c['name'], f"/{c['slug']}/"), (ci['name'], f"/{c['slug']}/{ci['slug']}/"), (short_name(p), None)]
+    org = {"@type": "Organization", "name": SITE["name"], "url": SITE["url"]}
     ld = {
-        "@context": "https://schema.org", "@type": "Article", "headline": p["title"],
+        "@context": "https://schema.org", "@type": "Article", "headline": p["title"][:110],
         "description": p["excerpt"], "image": [i["src"] for i in imgs], "datePublished": p["date"],
-        "dateModified": p.get("updated", p["date"]), "inLanguage": SITE["lang"],
-        "author": {"@type": "Organization", "name": SITE["name"]},
-        "publisher": {"@type": "Organization", "name": SITE["name"], "url": SITE["url"]},
+        "dateModified": modified, "inLanguage": SITE["lang"],
+        "author": org, "publisher": org,
+        "articleSection": f"{c['name']}・{ci['name']}", "keywords": ", ".join(p.get("tags", [])),
         "about": {"@type": "TouristAttraction", "name": p.get("place", p["title"]),
-                  "address": p.get("info", {}).get("地址", "")},
-        "mainEntityOfPage": SITE["url"] + p["url"],
+                  "address": {"@type": "PostalAddress", "streetAddress": p.get("info", {}).get("地址", ""),
+                              "addressLocality": ci["name"], "addressCountry": "TW" if c["slug"] == "taiwan" else c["en"]}},
+        "mainEntityOfPage": {"@type": "WebPage", "@id": SITE["url"] + p["url"]},
     }
-    extra = f'<script type="application/ld+json">{json.dumps(ld, ensure_ascii=False)}</script>'
-    h = head(p["title"], p["excerpt"], p["url"], imgs[0]["src"], extra)
+    extra = (f'<meta property="article:published_time" content="{E(p["date"])}">\n'
+             f'<meta property="article:modified_time" content="{E(modified)}">\n'
+             f'<meta property="article:section" content="{E(ci["name"])}">\n'
+             + "".join(f'<meta property="article:tag" content="{E(t)}">\n' for t in p.get("tags", []))
+             + jsonld(ld, crumbs_ld(crumbs, p["url"])))
+    h = head(p["title"], p["excerpt"], p["url"], imgs[0], extra, og_type="article")
     h += f"""<article class="post">
   <header class="post-head wrap">
-    {breadcrumbs([("首頁", "/"), (c['name'], f"/{c['slug']}/"), (ci['name'], f"/{c['slug']}/{ci['slug']}/"), (p['title'], None)])}
+    {breadcrumbs(crumbs)}
     <p class="kicker">{E(c['name'])}・{E(ci['name'])}</p>
     <h1>{E(p['title'])}</h1>
     {f'<p class="subtitle">{E(p["subtitle"])}</p>' if p.get('subtitle') else ''}
-    <p class="meta">{E(p['date'])}　・　約 {p['chars']} 字・閱讀 {p['minutes']} 分鐘</p>
+    <p class="meta"><time datetime="{E(p['date'])}">{E(p['date'])}</time>{f'（更新 <time datetime="{E(modified)}">{E(modified)}</time>）' if modified != p['date'] else ''}　・　約 {p['chars']} 字・閱讀 {p['minutes']} 分鐘</p>
   </header>
   <div class="post-hero wrap-wide">{figure(imgs[0], eager=True, cls='hero-fig')}</div>
   <div class="post-layout wrap">
@@ -288,7 +341,12 @@ def page_home(posts):
     for x in SITE["coming_soon"]:
         zh, en = x.split(" ", 1)
         countries += f'<div class="dest dest-soon"><span class="dest-en">{E(en)}</span><b>{E(zh)}</b><span>籌備中</span></div>'
-    h = head(SITE["name"], SITE["description"], "/", feat["images"][0]["src"])
+    ld_site = {"@context": "https://schema.org", "@type": "WebSite", "name": SITE["name"],
+               "alternateName": SITE["name_en"], "url": SITE["url"] + "/", "inLanguage": SITE["lang"],
+               "description": SITE["description"]}
+    ld_org = {"@context": "https://schema.org", "@type": "Organization", "name": SITE["name"],
+              "url": SITE["url"] + "/", "logo": SITE["url"] + "/img/favicon.svg"}
+    h = head(SITE["name"], SITE["description"], "/", feat["images"][0], jsonld(ld_site, ld_org))
     h += f"""<section class="hero wrap">
   <div class="hero-text">
     <p class="kicker">從台灣出發・走向世界城市</p>
@@ -323,8 +381,12 @@ def page_country(c, posts):
   <div class="section-head"><h2 class="section-title"><a href="/{c['slug']}/{ci['slug']}/">{E(ci['name'])} <small>{E(ci['en'])}</small></a></h2><span class="muted">{len(cp)} 篇</span></div>
   <div class="grid">{''.join(card(p) for p in cp)}</div>
 </section>"""
-    h = head(f"{c['name']}景點", c["intro"], f"/{c['slug']}/")
-    h += f"""<section class="page-head wrap">{breadcrumbs([("首頁", "/"), (c['name'], None)])}
+    crumbs = [("首頁", "/"), (c['name'], None)]
+    names = "、".join(short_name(p) for p in mine[:4])
+    desc = f"{c['intro']}收錄{names}等 {len(mine)} 篇{c['name']}景點介紹。" if mine else c["intro"]
+    h = head(f"{c['name']}景點推薦｜{c['en']} 旅遊景點介紹", desc, f"/{c['slug']}/",
+             mine[0]["images"][0] if mine else None, jsonld(crumbs_ld(crumbs, f"/{c['slug']}/"), item_list_ld(mine)))
+    h += f"""<section class="page-head wrap">{breadcrumbs(crumbs)}
   <p class="kicker">{E(c['en'])}</p><h1>{E(c['name'])}景點</h1><p class="subtitle">{E(c['intro'])}</p>
   <div class="chips">{''.join(f'<a href="/{c["slug"]}/{ci["slug"]}/">{E(ci["name"])}</a>' for ci in c['cities'] if any(p['city']==ci['slug'] for p in mine))}</div>
 </section><div class="wrap">{cities}</div>"""
@@ -333,8 +395,12 @@ def page_country(c, posts):
         cp = [p for p in mine if p["city"] == ci["slug"]]
         if not cp:
             continue
-        h = head(f"{ci['name']}景點推薦", ci["intro"], f"/{c['slug']}/{ci['slug']}/")
-        h += f"""<section class="page-head wrap">{breadcrumbs([("首頁", "/"), (c['name'], f"/{c['slug']}/"), (ci['name'], None)])}
+        path = f"/{c['slug']}/{ci['slug']}/"
+        crumbs = [("首頁", "/"), (c['name'], f"/{c['slug']}/"), (ci['name'], None)]
+        desc = f"{ci['intro']}收錄{'、'.join(short_name(p) for p in cp[:4])}等 {len(cp)} 篇{ci['name']}景點介紹，含交通、門票與參觀建議。"
+        h = head(f"{ci['name']}景點推薦｜{ci['en']} 必去景點", desc, path, cp[0]["images"][0],
+                 jsonld(crumbs_ld(crumbs, path), item_list_ld(cp)))
+        h += f"""<section class="page-head wrap">{breadcrumbs(crumbs)}
   <p class="kicker">{E(ci['en'])}・{E(c['name'])}</p><h1>{E(ci['name'])}景點推薦</h1><p class="subtitle">{E(ci['intro'])}</p>
 </section><div class="wrap"><div class="grid">{''.join(card(p) for p in cp)}</div></div>"""
         write(f"/{c['slug']}/{ci['slug']}/", h + foot())
@@ -347,7 +413,9 @@ def page_destinations(posts):
             cp = [p for p in posts if p["country"] == c["slug"] and p["city"] == ci["slug"]]
             if cp:
                 blocks += f'<div class="dir-col"><h3><a href="/{c["slug"]}/{ci["slug"]}/">{E(c["name"])}・{E(ci["name"])}</a></h3><ul>' + "".join(f'<li><a href="{p["url"]}">{E(p["title"])}</a></li>' for p in cp) + "</ul></div>"
-    h = head("所有目的地", "小樹洞旅行誌所有景點文章索引。", "/destinations/")
+    cities = "、".join(f'{ci["name"]}' for c in SITE["countries"] for ci in c["cities"] if any(p["city"] == ci["slug"] for p in posts))
+    h = head("所有目的地", f"小樹洞旅行誌全部 {len(posts)} 篇景點文章索引，依城市整理：{cities}。", "/destinations/",
+             None, jsonld(crumbs_ld([("首頁", "/"), ("所有目的地", None)], "/destinations/")))
     h += f'<section class="page-head wrap">{breadcrumbs([("首頁", "/"), ("所有目的地", None)])}<h1>所有目的地</h1><p class="subtitle">依城市整理的景點索引，持續更新中。</p></section><div class="wrap dir">{blocks}</div>'
     write("/destinations/", h + foot())
 
@@ -361,11 +429,21 @@ def page_static(posts):
 <h2>關於圖片</h2><p>本站照片來自 Wikimedia Commons 等平台、採用允許商業使用的創用 CC 授權（CC BY、CC BY-SA）或公眾領域（CC0）圖片，每張照片下方都標註攝影者、授權條款與原始出處。</p>
 <h2>關於訂票連結</h2><p>需要購票的景點，文章中會附上 Klook 的訂票連結，詳見<a href="/disclosure/">聯盟行銷揭露聲明</a>。</p>
 </div>"""
-    write("/about/", head("關於小樹洞", "關於小樹洞旅行誌。", "/about/") + about + foot())
+    write("/about/", head("關於小樹洞", "小樹洞旅行誌每篇只介紹一個景點，用 500–1000 字講清楚歷史、亮點、交通與門票，從台灣出發走向世界城市。", "/about/") + about + foot())
     credits = ""
     for p in posts:
         credits += f'<h3><a href="{p["url"]}">{E(p["title"])}</a></h3><ul class="credit-list">' + "".join(
             f'<li>{E(i["file"].replace("File:", ""))}　—　{credit(i)}</li>' for i in p["images"]) + "</ul>"
+    ga_note = ""
+    if SITE.get("ga4_id", "").strip():
+        ga_note = ("<h2>網站流量分析</h2>"
+                   "<p>本站使用 Google Analytics 4 統計匿名的瀏覽數據"
+                   "（例如頁面瀏覽次數、來源與裝置類型），用來了解哪些內容對讀者有幫助。"
+                   "Google 可能會使用 Cookie 收集這些資訊，詳見 "
+                   '<a href="https://policies.google.com/technologies/partner-sites" rel="noopener" target="_blank">'
+                   "Google 的資料使用說明</a>；你也可以安裝 "
+                   '<a href="https://tools.google.com/dlpage/gaoptout" rel="noopener" target="_blank">'
+                   "Google Analytics 停用外掛程式</a>。</p>")
     disc = f"""<section class="page-head wrap">{breadcrumbs([("首頁", "/"), ("聯盟行銷與圖片授權", None)])}<h1>聯盟行銷與圖片授權</h1></section>
 <div class="wrap prose narrow">
 <h2>聯盟行銷揭露</h2>
@@ -373,24 +451,63 @@ def page_static(posts):
 <p>我們只在「需要購票的景點」放上訂票連結，文章內容不受合作關係影響。票價、開放時間等資訊可能變動，請以官方與訂購頁面公告為準。</p>
 <h2>圖片授權</h2>
 <p>本站使用的照片皆為允許商業使用的授權：CC0／公眾領域、CC BY 或 CC BY-SA。依授權條款，我們在每張照片標示攝影者、授權方式與原始來源。若你是照片作者並對使用方式有疑慮，歡迎與我們聯繫。</p>
+{ga_note}
 <h2>各篇文章圖片出處</h2>{credits}
 </div>"""
     write("/disclosure/", head("聯盟行銷與圖片授權", "小樹洞旅行誌的聯盟行銷揭露與圖片授權說明。", "/disclosure/") + disc + foot())
     nf = f'<section class="page-head wrap center"><p class="kicker">404</p><h1>這個樹洞是空的</h1><p class="subtitle">找不到這個頁面，可能已經搬家了。</p><a class="btn" href="/">回到首頁</a></section>'
-    write("404.html", head("找不到頁面", "找不到頁面", "/404.html") + nf + foot())
+    write("404.html", head("找不到頁面", "找不到頁面", "/404.html", noindex=True) + nf + foot())
+
+
+def lastmod(ps):
+    return max((p.get("updated", p["date"]) for p in ps), default=None)
 
 
 def sitemap(posts):
-    urls = ["/", "/destinations/", "/about/", "/disclosure/"]
+    urls = [("/", lastmod(posts)), ("/destinations/", lastmod(posts)), ("/about/", None), ("/disclosure/", lastmod(posts))]
     for c in SITE["countries"]:
-        urls.append(f"/{c['slug']}/")
-        urls += [f"/{c['slug']}/{ci['slug']}/" for ci in c["cities"] if any(p["city"] == ci["slug"] for p in posts)]
-    urls += [p["url"] for p in posts]
+        mine = [p for p in posts if p["country"] == c["slug"]]
+        urls.append((f"/{c['slug']}/", lastmod(mine)))
+        for ci in c["cities"]:
+            cp = [p for p in mine if p["city"] == ci["slug"]]
+            if cp:
+                urls.append((f"/{c['slug']}/{ci['slug']}/", lastmod(cp)))
+    urls += [(p["url"], lastmod([p])) for p in posts]
     xml = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
-    xml += "".join(f"  <url><loc>{SITE['url']}{u}</loc></url>\n" for u in urls) + "</urlset>\n"
+    xml += "".join(f"  <url><loc>{SITE['url']}{u}</loc>" + (f"<lastmod>{d}</lastmod>" if d else "") + "</url>\n"
+                   for u, d in urls) + "</urlset>\n"
     (OUT / "sitemap.xml").write_text(xml, encoding="utf-8")
+    feed(posts)
     (OUT / "robots.txt").write_text(f"User-agent: *\nAllow: /\nSitemap: {SITE['url']}/sitemap.xml\n", encoding="utf-8")
     (OUT / "CNAME").write_text("little-hole.com\n", encoding="utf-8")
+
+
+def feed(posts):
+    """Atom 訂閱：最新 20 篇，讓搜尋引擎與 RSS 閱讀器更快發現新文章。"""
+    X = lambda s: html.escape(str(s), quote=False)
+    stamp = lambda d: f"{d}T00:00:00+08:00"
+    entries = "".join(f"""  <entry>
+    <title>{X(p['title'])}</title>
+    <link href="{SITE['url']}{p['url']}"/>
+    <id>{SITE['url']}{p['url']}</id>
+    <published>{stamp(p['date'])}</published>
+    <updated>{stamp(lastmod([p]))}</updated>
+    <summary>{X(p['excerpt'])}</summary>
+    <category term="{E(p['_city']['name'])}"/>
+  </entry>
+""" for p in posts[:20])
+    xml = f"""<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="{SITE['lang']}">
+  <title>{X(SITE['name'])}</title>
+  <subtitle>{X(SITE['tagline'])}</subtitle>
+  <link href="{SITE['url']}/"/>
+  <link rel="self" href="{SITE['url']}/feed.xml"/>
+  <id>{SITE['url']}/</id>
+  <updated>{stamp(lastmod(posts) or dt.date.today().isoformat())}</updated>
+  <author><name>{X(SITE['name'])}</name></author>
+{entries}</feed>
+"""
+    (OUT / "feed.xml").write_text(xml, encoding="utf-8")
 
 
 def build():
@@ -414,8 +531,38 @@ def build():
     print(f"完成：{len(posts)} 篇文章 → {OUT}")
 
 
+def check():
+    """只驗證文章（不寫入 dist/）：字數、圖片數、圖片編號、Klook 欄位。"""
+    posts, bad = load_posts(), 0
+    seen = {}
+    for p in posts:
+        errs = []
+        if not 500 <= p["chars"] <= 1000:
+            errs.append(f"字數 {p['chars']}")
+        n = len(p["images"])
+        if not 3 <= n <= 5:
+            errs.append(f"圖片 {n} 張")
+        for m in re.findall(r"\{\{img:(\d+)\}\}", p["body"]):
+            if not 2 <= int(m) <= n:
+                errs.append(f"img:{m} 編號錯誤（內文只能用 2–{n}，1 是封面）")
+        for i in p["images"]:
+            if not i.get("caption"):
+                errs.append(f"缺 caption：{i['file']}")
+            if i["file"] in seen:
+                errs.append(f"圖片與 {seen[i['file']]} 重複：{i['file']}")
+            seen[i["file"]] = p["slug"]
+        if "{{klook}}" in p["body"] and not p.get("klook"):
+            errs.append("內文有 {{klook}} 但 klook 為 null")
+        bad += bool(errs)
+        print(f"{'✗' if errs else '✓'} {p['url']}  {p['chars']} 字・{n} 張圖  {'；'.join(errs)}")
+    print(f"{len(posts)} 篇，{bad} 篇有問題")
+    return bad
+
+
 if __name__ == "__main__":
     sys.stdout.reconfigure(encoding="utf-8")
+    if "--check" in sys.argv:
+        sys.exit(1 if check() else 0)
     build()
     if "--serve" in sys.argv:
         import functools, http.server

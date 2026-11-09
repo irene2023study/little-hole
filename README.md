@@ -16,6 +16,14 @@ python build.py --serve    # 產生並在 http://localhost:8000 預覽
 - `klook_aid`：填入 Klook 聯盟的 aid，所有 Klook 連結會自動加上 `?aid=...`。若文章裡填的是 `affiliate.klook.com` 產生的完整分潤連結，則原樣使用。
 - `countries[].cities[]`：國家／城市分類，新增城市先在這裡加。
 - `coming_soon`：首頁「即將推出」的目的地。
+- `google_site_verification`（選填）：Google Search Console 的 HTML 標記驗證碼，填入後每頁會輸出 `<meta name="google-site-verification">`。
+
+## SEO（建置時自動產生）
+
+- 每頁：canonical、robots、Open Graph／Twitter 卡片（含圖片尺寸與 alt）、Atom 訂閱連結
+- 文章：`Article` + `BreadcrumbList` 結構化資料、`article:*` 發佈／更新時間與標籤；front matter 可加 `"updated": "YYYY-MM-DD"` 標示更新日
+- 國家／城市頁：`BreadcrumbList` + `ItemList`，描述自動帶入收錄景點
+- `sitemap.xml`（含 lastmod）、`robots.txt`、`feed.xml`（Atom），404 頁 noindex
 
 ## 新增文章
 
