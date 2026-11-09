@@ -252,10 +252,22 @@ def klook_box(p, inline_box=False):
     if not k:
         return ""
     href = E(klook_link(k["url"]))
+    prices = ""
+    if k.get("prices"):
+        rows = "".join(
+            f'<li><span class="kp-type">{E(r["type"])}'
+            + (f'<small>{E(r["note"])}</small>' if r.get("note") else "")
+            + f'</span><b class="kp-price">{E(r["price"])}</b></li>'
+            for r in k["prices"])
+        src = E(k.get("price_source", "官方公告票價"))
+        when = f"（{E(k['price_date'])} 查詢）" if k.get("price_date") else ""
+        prices = (f'<ul class="klook-prices">{rows}</ul>'
+                  f'<p class="klook-src">{src}{when}，Klook 售價可能另有優惠，以訂購頁為準</p>')
     return f"""<aside class="klook{' klook-inline' if inline_box else ''}">
   <p class="klook-kicker">門票＆行程</p>
   <p class="klook-title">{E(k.get('label', p['title'] + ' 門票'))}</p>
   <p class="klook-note">{E(k.get('note', '線上預訂免排隊，出發前也能隨時查看最新票價與優惠。'))}</p>
+  {prices}
   <a class="btn-klook" href="{href}" target="_blank" rel="sponsored nofollow noopener">到 Klook 查看票價 →</a>
   <p class="klook-disc">＊此為聯盟行銷連結，透過連結預訂小樹洞可獲得少量回饋，不會影響你的價格。</p>
 </aside>"""

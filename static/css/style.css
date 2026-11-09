@@ -179,6 +179,12 @@ section.wrap { margin-bottom: 72px; }
 .klook-kicker { font-size: 12px; font-weight: 700; letter-spacing: .16em; color: var(--amber-2); }
 .klook-title { font: 700 20px/1.4 var(--serif); margin: 4px 0 6px !important; }
 .klook-note { font-size: 14px; line-height: 1.7; opacity: .85; }
+.klook-prices { list-style: none; margin: 14px 0 0; padding: 0; border-top: 1px solid rgba(196, 100, 29, .25); }
+.klook-prices li { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 9px 0; border-bottom: 1px solid rgba(196, 100, 29, .25); }
+.kp-type { font-size: 15px; font-weight: 500; line-height: 1.4; }
+.kp-type small { display: block; font-size: 12px; font-weight: 400; opacity: .7; margin-top: 2px; }
+.kp-price { font: 700 19px/1.2 var(--sans); color: var(--amber-2); white-space: nowrap; letter-spacing: 0; }
+.klook-src { font-size: 12px !important; opacity: .65; margin-top: 8px !important; line-height: 1.6 !important; }
 .btn-klook { display: block; text-align: center; margin: 16px 0 10px; background: var(--amber); color: #fff; font-weight: 700; font-size: 16px; padding: 13px 18px; border-radius: 10px; text-decoration: none; transition: background .2s, transform .2s; }
 .btn-klook:hover { background: var(--amber-2); transform: translateY(-1px); }
 .klook-disc { font-size: 11.5px !important; line-height: 1.6 !important; opacity: .7; }

@@ -41,7 +41,9 @@ python build.py --serve    # 產生並在 http://localhost:8000 預覽
   "excerpt": "摘要（首頁卡片與 SEO 描述）",
   "tags": ["台北景點"],
   "info": { "地址": "...", "開放時間": "...", "門票": "...", "交通": "...", "建議停留": "..." },
-  "klook": { "url": "https://www.klook.com/zh-TW/activity/...", "label": "...門票", "note": "..." },
+  "klook": { "url": "https://www.klook.com/zh-TW/activity/...", "label": "...門票", "note": "...",
+             "prices": [{"type": "全票", "price": "NT$200", "note": "18歲以上"}],
+             "price_source": "官方公告票價", "price_date": "2026年11月" },
   "images": [ ...由 tools/commons.py resolve 產生... ]
 }
 ---
