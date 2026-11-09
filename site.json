@@ -1,0 +1,27 @@
+{
+  "name": "小樹洞旅行誌",
+  "name_en": "Little Hole Travel",
+  "tagline": "鑽進城市的小樹洞，一篇讀懂一個景點",
+  "description": "小樹洞旅行誌：全球主要城市景點深度介紹，從台灣出發，每篇帶你看懂景點的歷史、亮點、交通與門票資訊。",
+  "url": "https://little-hole.com",
+  "lang": "zh-Hant-TW",
+  "klook_aid": "141112",
+  "countries": [
+    {
+      "slug": "taiwan",
+      "name": "台灣",
+      "en": "Taiwan",
+      "intro": "山海、老街、夜市與博物館，台灣小小一座島，卻能裝下截然不同的風景。我們的旅程就從這裡開始。",
+      "cities": [
+        {"slug": "taipei", "name": "台北", "en": "Taipei", "intro": "首都台北把摩天大樓、故宮國寶與溫泉山景收在同一張捷運路網裡。"},
+        {"slug": "new-taipei", "name": "新北", "en": "New Taipei", "intro": "環繞台北的新北市，藏著九份、淡水、平溪等充滿故事的山城與港鎮。"},
+        {"slug": "taichung", "name": "台中", "en": "Taichung", "intro": "氣候宜人的中部大城，文創園區與老建築新生的好去處。"},
+        {"slug": "tainan", "name": "台南", "en": "Tainan", "intro": "台灣最古老的城市，古蹟、廟宇與小吃一步一景。"},
+        {"slug": "kaohsiung", "name": "高雄", "en": "Kaohsiung", "intro": "港都高雄，海風、藝術特區與愛河夜景。"},
+        {"slug": "nantou", "name": "南投", "en": "Nantou", "intro": "台灣唯一不靠海的縣，卻有日月潭與合歡山。"},
+        {"slug": "hualien", "name": "花蓮", "en": "Hualien", "intro": "太魯閣峽谷與太平洋海岸線，東台灣的壯闊。"}
+      ]
+    }
+  ],
+  "coming_soon": ["日本 Japan", "韓國 Korea", "泰國 Thailand", "香港 Hong Kong", "新加坡 Singapore"]
+}
