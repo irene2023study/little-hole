@@ -191,8 +191,8 @@ def head(title, desc, path, image=None, extra="", og_type="website", noindex=Fal
     <a class="logo" href="/">{LOGO}<span class="logo-text"><b>{E(SITE['name'])}</b><small>{E(SITE['name_en'])}</small></span></a>
     <button class="nav-toggle" aria-expanded="false" aria-controls="nav" aria-label="選單"><span></span><span></span></button>
     <nav id="nav" class="nav">
-      {''.join(f'<a href="/{c["slug"]}/">{E(c["name"])}</a>' for c in SITE['countries'])}
-      <a href="/destinations/">所有目的地</a>
+      {''.join(f'<a href="/{c["slug"]}/">{E(c["name"])}</a>' for c in SITE['countries'] if c.get('nav'))}
+      <a href="/destinations/">全球目的地</a>
       <a href="/about/">關於</a>
     </nav>
   </div>
@@ -213,7 +213,7 @@ def foot():
     <div>
       <h4>目的地</h4>
       {''.join(f'<a href="/{c["slug"]}/">{E(c["name"])} {E(c["en"])}</a>' for c in SITE['countries'])}
-      <span class="muted">{"・".join(E(x.split()[0]) for x in SITE['coming_soon'])}（籌備中）</span>
+      {('<span class="muted">' + "・".join(E(x.split()[0]) for x in SITE['coming_soon']) + '（籌備中）</span>') if SITE.get('coming_soon') else ''}
     </div>
     <div>
       <h4>關於本站</h4>

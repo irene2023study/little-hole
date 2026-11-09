@@ -8,6 +8,8 @@
 resolve 會輸出可直接貼進文章 front matter "images" 欄位的 JSON。
 """
 import json
+import time
+import urllib.error
 import re
 import sys
 import urllib.parse
@@ -22,7 +24,28 @@ def api(params):
     params = dict(params, format="json")
     url = "https://commons.wikimedia.org/w/api.php?" + urllib.parse.urlencode(params)
     req = urllib.request.Request(url, headers=UA)
-    return json.load(urllib.request.urlopen(req, timeout=30))
+
+    for attempt in range(6):
+        try:
+            return json.load(urllib.request.urlopen(req, timeout=30))
+        except urllib.error.HTTPError as e:
+            if e.code != 429 or attempt == 5:
+                raise
+            time.sleep(5 * (attempt + 1))  # Commons 限流，稍等再試
+
+
+RISKY_CATS = ("NoFoP", "No FoP", "Deletion requests", "Copyright violations")
+
+
+def fop_warnings(titles):
+    """回傳 {title: [可疑分類]}：全景自由（FoP）或刪除請求相關分類。"""
+    r = api(dict(action="query", titles="|".join(titles), prop="categories", cllimit="max"))
+    out = {}
+    for p in r["query"]["pages"].values():
+        cats = [c["title"] for c in p.get("categories", []) if any(k.lower() in c["title"].lower() for k in RISKY_CATS)]
+        if cats:
+            out[p["title"]] = cats
+    return out
 
 
 def strip_tags(s):
@@ -83,6 +106,8 @@ def resolve(titles):
         i["alt"] = ""
         i["caption"] = ""
         out.append(i)
+    for t, cats in fop_warnings([i["file"] for i in out]).items():
+        print(f"!! 版權風險（全景自由/刪除請求），建議換圖：{t} → {cats}", file=sys.stderr)
     print(json.dumps(out, ensure_ascii=False, indent=2))
 
 

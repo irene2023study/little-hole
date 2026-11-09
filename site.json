@@ -14,15 +14,56 @@
       "en": "Taiwan",
       "intro": "山海、老街、夜市與博物館，台灣小小一座島，卻能裝下截然不同的風景。我們的旅程就從這裡開始。",
       "cities": [
-        {"slug": "taipei", "name": "台北", "en": "Taipei", "intro": "首都台北把摩天大樓、故宮國寶與溫泉山景收在同一張捷運路網裡。"},
-        {"slug": "new-taipei", "name": "新北", "en": "New Taipei", "intro": "環繞台北的新北市，藏著九份、淡水、平溪等充滿故事的山城與港鎮。"},
-        {"slug": "taichung", "name": "台中", "en": "Taichung", "intro": "氣候宜人的中部大城，文創園區與老建築新生的好去處。"},
-        {"slug": "tainan", "name": "台南", "en": "Tainan", "intro": "台灣最古老的城市，古蹟、廟宇與小吃一步一景。"},
-        {"slug": "kaohsiung", "name": "高雄", "en": "Kaohsiung", "intro": "港都高雄，海風、藝術特區與愛河夜景。"},
-        {"slug": "pingtung", "name": "屏東", "en": "Pingtung", "intro": "台灣最南端的國境之南，墾丁海岸、小琉球與恆春半島的熱帶風情。"},
-        {"slug": "nantou", "name": "南投", "en": "Nantou", "intro": "台灣唯一不靠海的縣，卻有日月潭與合歡山。"},
-        {"slug": "hualien", "name": "花蓮", "en": "Hualien", "intro": "太魯閣峽谷與太平洋海岸線，東台灣的壯闊。"}
-      ]
+        {
+          "slug": "taipei",
+          "name": "台北",
+          "en": "Taipei",
+          "intro": "首都台北把摩天大樓、故宮國寶與溫泉山景收在同一張捷運路網裡。"
+        },
+        {
+          "slug": "new-taipei",
+          "name": "新北",
+          "en": "New Taipei",
+          "intro": "環繞台北的新北市，藏著九份、淡水、平溪等充滿故事的山城與港鎮。"
+        },
+        {
+          "slug": "taichung",
+          "name": "台中",
+          "en": "Taichung",
+          "intro": "氣候宜人的中部大城，文創園區與老建築新生的好去處。"
+        },
+        {
+          "slug": "tainan",
+          "name": "台南",
+          "en": "Tainan",
+          "intro": "台灣最古老的城市，古蹟、廟宇與小吃一步一景。"
+        },
+        {
+          "slug": "kaohsiung",
+          "name": "高雄",
+          "en": "Kaohsiung",
+          "intro": "港都高雄，海風、藝術特區與愛河夜景。"
+        },
+        {
+          "slug": "pingtung",
+          "name": "屏東",
+          "en": "Pingtung",
+          "intro": "台灣最南端的國境之南，墾丁海岸、小琉球與恆春半島的熱帶風情。"
+        },
+        {
+          "slug": "nantou",
+          "name": "南投",
+          "en": "Nantou",
+          "intro": "台灣唯一不靠海的縣，卻有日月潭與合歡山。"
+        },
+        {
+          "slug": "hualien",
+          "name": "花蓮",
+          "en": "Hualien",
+          "intro": "太魯閣峽谷與太平洋海岸線，東台灣的壯闊。"
+        }
+      ],
+      "nav": true
     },
     {
       "slug": "japan",
@@ -30,9 +71,155 @@
       "en": "Japan",
       "intro": "古寺與摩天樓比鄰、職人精神藏在每個角落，日本永遠是台灣人最愛的出國首選。",
       "cities": [
-        {"slug": "tokyo", "name": "東京", "en": "Tokyo", "intro": "江戶的下町人情與世界級的天際線，東京一座城市就能玩上好幾回。"}
+        {
+          "slug": "tokyo",
+          "name": "東京",
+          "en": "Tokyo",
+          "intro": "江戶的下町人情與世界級的天際線，東京一座城市就能玩上好幾回。"
+        }
+      ],
+      "nav": true
+    },
+    {
+      "slug": "thailand",
+      "name": "泰國",
+      "en": "Thailand",
+      "intro": "微笑國度的金色佛寺、水上市場與街頭小吃，是台灣人最常去的東南亞國家。",
+      "cities": [
+        {
+          "slug": "bangkok",
+          "name": "曼谷",
+          "en": "Bangkok",
+          "intro": "金碧輝煌的皇宮佛寺與摩天大樓並存，曼谷白天逛寺廟、晚上逛夜市都精彩。"
+        }
+      ]
+    },
+    {
+      "slug": "korea",
+      "name": "韓國",
+      "en": "Korea",
+      "intro": "韓劇場景、宮殿古蹟與美妝美食，飛行兩個多小時就到。",
+      "cities": [
+        {
+          "slug": "seoul",
+          "name": "首爾",
+          "en": "Seoul",
+          "intro": "朝鮮王朝的五大宮與K-pop潮流街區，首爾把傳統與時尚揉在一起。"
+        }
+      ]
+    },
+    {
+      "slug": "hong-kong",
+      "name": "香港",
+      "en": "Hong Kong",
+      "intro": "東方之珠的維港夜景、山頂纜車與港式茶餐廳。",
+      "cities": [
+        {
+          "slug": "hong-kong",
+          "name": "香港",
+          "en": "Hong Kong",
+          "intro": "維多利亞港兩岸的天際線，是世界最經典的城市夜景之一。"
+        }
+      ]
+    },
+    {
+      "slug": "singapore",
+      "name": "新加坡",
+      "en": "Singapore",
+      "intro": "乾淨有序的花園城市，多元文化在小小島國裡和平共處。",
+      "cities": [
+        {
+          "slug": "singapore",
+          "name": "新加坡",
+          "en": "Singapore",
+          "intro": "濱海灣的未來感建築與牛車水、小印度的老街區，一天就能環遊多國文化。"
+        }
+      ]
+    },
+    {
+      "slug": "uae",
+      "name": "阿聯",
+      "en": "UAE",
+      "intro": "沙漠裡長出的未來城市，世界紀錄等級的建築一座接一座。",
+      "cities": [
+        {
+          "slug": "dubai",
+          "name": "杜拜",
+          "en": "Dubai",
+          "intro": "世界最高樓、沙漠衝沙與黃金市集，杜拜把不可能變成日常。"
+        }
+      ]
+    },
+    {
+      "slug": "turkey",
+      "name": "土耳其",
+      "en": "Türkiye",
+      "intro": "橫跨歐亞的古文明交會之地，清真寺、市集與熱氣球美景。",
+      "cities": [
+        {
+          "slug": "istanbul",
+          "name": "伊斯坦堡",
+          "en": "Istanbul",
+          "intro": "拜占庭與鄂圖曼兩大帝國的首都，博斯普魯斯海峽把城市分成歐亞兩半。"
+        }
+      ]
+    },
+    {
+      "slug": "france",
+      "name": "法國",
+      "en": "France",
+      "intro": "藝術、時尚與美食的國度，連空氣都帶著浪漫。",
+      "cities": [
+        {
+          "slug": "paris",
+          "name": "巴黎",
+          "en": "Paris",
+          "intro": "鐵塔、羅浮宮與塞納河畔，巴黎是一生至少要去一次的城市。"
+        }
+      ]
+    },
+    {
+      "slug": "uk",
+      "name": "英國",
+      "en": "United Kingdom",
+      "intro": "皇室、博物館與下午茶，老牌帝國的歷史感無所不在。",
+      "cities": [
+        {
+          "slug": "london",
+          "name": "倫敦",
+          "en": "London",
+          "intro": "大英博物館、倫敦眼與泰晤士河，倫敦有大量免費博物館等你探索。"
+        }
+      ]
+    },
+    {
+      "slug": "italy",
+      "name": "義大利",
+      "en": "Italy",
+      "intro": "古羅馬遺跡、文藝復興藝術與道地義式料理。",
+      "cities": [
+        {
+          "slug": "rome",
+          "name": "羅馬",
+          "en": "Rome",
+          "intro": "兩千年歷史的永恆之城，走在街上就像逛一座露天博物館。"
+        }
+      ]
+    },
+    {
+      "slug": "usa",
+      "name": "美國",
+      "en": "USA",
+      "intro": "從大城市到國家公園，美國的尺度永遠超乎想像。",
+      "cities": [
+        {
+          "slug": "new-york",
+          "name": "紐約",
+          "en": "New York",
+          "intro": "自由女神、時代廣場與中央公園，紐約是全世界的十字路口。"
+        }
       ]
     }
   ],
-  "coming_soon": ["韓國 Korea", "泰國 Thailand", "香港 Hong Kong", "新加坡 Singapore"]
+  "coming_soon": []
 }
