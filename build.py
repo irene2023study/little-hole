@@ -1,4 +1,4 @@
-"""小樹洞旅行誌 — 靜態網站產生器（只用 Python 標準函式庫）
+"""小樹洞 — 靜態網站產生器（只用 Python 標準函式庫）
 
   python build.py          產生網站到 dist/
   python build.py --serve  產生後在 http://localhost:8000 預覽
@@ -110,9 +110,8 @@ def markdown(body, post):
 
 # ---------------------------------------------------------------- 版型元件
 
-LOGO = ('<svg class="logo-mark" viewBox="0 0 40 40" aria-hidden="true">'
-        '<path d="M20 3c-7 0-12 5-12 11 0 3 1 5 3 7v14c0 1 1 2 2 2h14c1 0 2-1 2-2V21c2-2 3-4 3-7 0-6-5-11-12-11z" fill="currentColor"/>'
-        '<ellipse cx="20" cy="25" rx="4.2" ry="5.4" fill="var(--paper)"/></svg>')
+LOGO = ('<svg class="logo-mark" viewBox="0 0 48 48" aria-hidden="true">'
+        '<rect x="2" y="2" width="44" height="44" rx="11" fill="#c8552d"/><rect x="5.5" y="5.5" width="37" height="37" rx="8" fill="none" stroke="#faf6ef" stroke-width="1.4" stroke-dasharray="2.2 2"/><g fill="#faf6ef"><circle cx="17.5" cy="20" r="6.5"/><circle cx="30.5" cy="20" r="6.5"/><circle cx="24" cy="15.5" r="8"/><path d="M19 23h10v9.5c0 2 1.5 3.3 4.5 4H14.5c3-.7 4.5-2 4.5-4z"/></g><ellipse cx="24" cy="28" rx="3" ry="4" fill="#c8552d"/></svg>')
 
 
 def jsonld(*objs):
@@ -426,7 +425,7 @@ def page_destinations(posts):
             if cp:
                 blocks += f'<div class="dir-col"><h3><a href="/{c["slug"]}/{ci["slug"]}/">{E(c["name"])}・{E(ci["name"])}</a></h3><ul>' + "".join(f'<li><a href="{p["url"]}">{E(p["title"])}</a></li>' for p in cp) + "</ul></div>"
     cities = "、".join(f'{ci["name"]}' for c in SITE["countries"] for ci in c["cities"] if any(p["city"] == ci["slug"] for p in posts))
-    h = head("所有目的地", f"小樹洞旅行誌全部 {len(posts)} 篇景點文章索引，依城市整理：{cities}。", "/destinations/",
+    h = head("所有目的地", f"{SITE['name']}全部 {len(posts)} 篇景點文章索引，依城市整理：{cities}。", "/destinations/",
              None, jsonld(crumbs_ld([("首頁", "/"), ("所有目的地", None)], "/destinations/")))
     h += f'<section class="page-head wrap">{breadcrumbs([("首頁", "/"), ("所有目的地", None)])}<h1>所有目的地</h1><p class="subtitle">依城市整理的景點索引，持續更新中。</p></section><div class="wrap dir">{blocks}</div>'
     write("/destinations/", h + foot())
@@ -441,7 +440,7 @@ def page_static(posts):
 <h2>關於圖片</h2><p>本站照片來自 Wikimedia Commons 等平台、採用允許商業使用的創用 CC 授權（CC BY、CC BY-SA）或公眾領域（CC0）圖片，每張照片下方都標註攝影者、授權條款與原始出處。</p>
 <h2>關於訂票連結</h2><p>需要購票的景點，文章中會附上 Klook 的訂票連結，詳見<a href="/disclosure/">聯盟行銷揭露聲明</a>。</p>
 </div>"""
-    write("/about/", head("關於小樹洞", "小樹洞旅行誌每篇只介紹一個景點，用 500–1000 字講清楚歷史、亮點、交通與門票，從台灣出發走向世界城市。", "/about/") + about + foot())
+    write("/about/", head("關於小樹洞", "小樹洞每篇只介紹一個景點，用 500–1000 字講清楚歷史、亮點、交通與門票，從台灣出發走向世界城市。", "/about/") + about + foot())
     credits = ""
     for p in posts:
         credits += f'<h3><a href="{p["url"]}">{E(p["title"])}</a></h3><ul class="credit-list">' + "".join(
@@ -466,7 +465,7 @@ def page_static(posts):
 {ga_note}
 <h2>各篇文章圖片出處</h2>{credits}
 </div>"""
-    write("/disclosure/", head("聯盟行銷與圖片授權", "小樹洞旅行誌的聯盟行銷揭露與圖片授權說明。", "/disclosure/") + disc + foot())
+    write("/disclosure/", head("聯盟行銷與圖片授權", "小樹洞的聯盟行銷揭露與圖片授權說明。", "/disclosure/") + disc + foot())
     nf = f'<section class="page-head wrap center"><p class="kicker">404</p><h1>這個樹洞是空的</h1><p class="subtitle">找不到這個頁面，可能已經搬家了。</p><a class="btn" href="/">回到首頁</a></section>'
     write("404.html", head("找不到頁面", "找不到頁面", "/404.html", noindex=True) + nf + foot())
 

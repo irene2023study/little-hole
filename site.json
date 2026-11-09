@@ -1,8 +1,8 @@
 {
-  "name": "小樹洞旅行誌",
-  "name_en": "Little Hole Travel",
+  "name": "小樹洞: 旅遊x探店x料理",
+  "name_en": "Little Hole",
   "tagline": "鑽進城市的小樹洞，一篇讀懂一個景點",
-  "description": "小樹洞旅行誌：全球主要城市景點深度介紹，從台灣出發，每篇帶你看懂景點的歷史、亮點、交通與門票資訊。",
+  "description": "小樹洞：全球主要城市景點深度介紹，從台灣出發，每篇帶你看懂景點的歷史、亮點、交通與門票資訊。",
   "url": "https://little-hole.com",
   "lang": "zh-Hant-TW",
   "klook_aid": "141112",
@@ -23,7 +23,16 @@
         {"slug": "nantou", "name": "南投", "en": "Nantou", "intro": "台灣唯一不靠海的縣，卻有日月潭與合歡山。"},
         {"slug": "hualien", "name": "花蓮", "en": "Hualien", "intro": "太魯閣峽谷與太平洋海岸線，東台灣的壯闊。"}
       ]
+    },
+    {
+      "slug": "japan",
+      "name": "日本",
+      "en": "Japan",
+      "intro": "古寺與摩天樓比鄰、職人精神藏在每個角落，日本永遠是台灣人最愛的出國首選。",
+      "cities": [
+        {"slug": "tokyo", "name": "東京", "en": "Tokyo", "intro": "江戶的下町人情與世界級的天際線，東京一座城市就能玩上好幾回。"}
+      ]
     }
   ],
-  "coming_soon": ["日本 Japan", "韓國 Korea", "泰國 Thailand", "香港 Hong Kong", "新加坡 Singapore"]
+  "coming_soon": ["韓國 Korea", "泰國 Thailand", "香港 Hong Kong", "新加坡 Singapore"]
 }

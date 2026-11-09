@@ -1,4 +1,4 @@
-# 小樹洞旅行誌 little-hole.com
+# 小樹洞: 旅遊x探店x料理 little-hole.com
 
 純靜態網站，只需要 Python 3（不用安裝任何套件）。
 
