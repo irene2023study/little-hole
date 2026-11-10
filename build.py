@@ -137,6 +137,16 @@ def short_name(p):
     return p.get("place") or p["title"].split("｜")[0]
 
 
+def nav_region(r):
+    """導覽列的區域下拉選單（例如 歐洲 → 法國／英國／義大利）。"""
+    cs = [c for c in SITE["countries"] if c["slug"] in r["countries"]]
+    items = f'<a href="/{r["slug"]}/">{E(r["name"])}總覽</a>' + "".join(
+        f'<a href="/{c["slug"]}/">{E(c["name"])} <small>{E(c["en"])}</small></a>' for c in cs)
+    return (f'<div class="nav-drop"><button class="nav-drop-btn" aria-expanded="false" aria-haspopup="true">'
+            f'{E(r["name"])}<svg viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>'
+            f'<div class="nav-menu">{items}</div></div>')
+
+
 def head(title, desc, path, image=None, extra="", og_type="website", noindex=False):
     full = f"{title}｜{SITE['name']}" if title != SITE["name"] else f"{SITE['name']}｜{SITE['tagline']}"
     url = SITE["url"] + path
@@ -192,7 +202,7 @@ def head(title, desc, path, image=None, extra="", og_type="website", noindex=Fal
     <button class="nav-toggle" aria-expanded="false" aria-controls="nav" aria-label="選單"><span></span><span></span></button>
     <nav id="nav" class="nav">
       {''.join(f'<a href="/{c["slug"]}/">{E(c["name"])}</a>' for c in SITE['countries'] if c.get('nav'))}
-      {''.join(f'<a href="/{r["slug"]}/">{E(r["name"])}</a>' for r in SITE.get('regions', []))}
+      {''.join(nav_region(r) for r in SITE.get('regions', []))}
       <a href="/destinations/">全球目的地</a>
       <a href="/about/">關於</a>
     </nav>

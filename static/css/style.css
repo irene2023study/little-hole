@@ -54,6 +54,18 @@ h1, h2, h3 { font-family: var(--serif); line-height: 1.35; letter-spacing: .03em
 .nav { display: flex; gap: 28px; }
 .nav a { color: var(--ink-2); text-decoration: none; font-size: 15px; font-weight: 500; }
 .nav a:hover { color: var(--forest); }
+.nav-drop { position: relative; }
+.nav-drop-btn { display: inline-flex; align-items: center; gap: 6px; background: none; border: 0; padding: 0; margin: 0; cursor: pointer; color: var(--ink-2); font: 500 15px/1.85 var(--sans); letter-spacing: .02em; }
+.nav-drop-btn:hover, .nav-drop.open .nav-drop-btn { color: var(--forest); }
+.nav-drop-btn svg { width: 10px; height: 6px; transition: transform .2s; }
+.nav-drop.open .nav-drop-btn svg { transform: rotate(180deg); }
+.nav-menu { display: none; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); min-width: 190px; padding: 8px; background: var(--card); border: 1px solid var(--line); border-radius: 12px; box-shadow: var(--shadow); z-index: 30; }
+.nav-menu::before { content: ""; position: absolute; left: 0; right: 0; top: -14px; height: 14px; }
+.nav-drop.open .nav-menu { display: block; }
+.nav-menu a { display: block; padding: 9px 14px; border-radius: 8px; white-space: nowrap; }
+.nav-menu a:hover { background: var(--paper-2); }
+.nav-menu a small { color: var(--muted); font-size: 12px; letter-spacing: .08em; margin-left: 4px; }
+@media (hover: hover) and (min-width: 761px) { .nav-drop:hover .nav-menu { display: block; } .nav-drop:hover .nav-drop-btn { color: var(--forest); } }
 .nav-toggle { display: none; background: none; border: 0; width: 40px; height: 40px; cursor: pointer; padding: 10px; }
 .nav-toggle span { display: block; height: 2px; background: var(--ink); margin: 5px 0; transition: transform .2s; }
 @media (max-width: 760px) {
@@ -61,6 +73,9 @@ h1, h2, h3 { font-family: var(--serif); line-height: 1.35; letter-spacing: .03em
   .nav { position: absolute; top: 68px; left: 0; right: 0; flex-direction: column; gap: 0; background: var(--paper); border-bottom: 1px solid var(--line); display: none; }
   .nav.open { display: flex; }
   .nav a { padding: 14px 16px; border-top: 1px solid var(--line); }
+  .nav-drop-btn { width: 100%; justify-content: space-between; padding: 14px 16px; border-top: 1px solid var(--line); }
+  .nav-menu { position: static; transform: none; min-width: 0; padding: 0; border: 0; border-radius: 0; box-shadow: none; background: var(--paper-2); }
+  .nav-menu a { padding: 12px 16px 12px 32px; border-radius: 0; }
   .nav-toggle[aria-expanded="true"] span:first-child { transform: translateY(3.5px) rotate(45deg); }
   .nav-toggle[aria-expanded="true"] span:last-child { transform: translateY(-3.5px) rotate(-45deg); }
 }
