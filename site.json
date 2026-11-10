@@ -222,5 +222,18 @@
     }
   ],
   "coming_soon": [],
-  "featured": "eiffel-tower"
+  "featured": "eiffel-tower",
+  "regions": [
+    {
+      "slug": "europe",
+      "name": "歐洲",
+      "en": "Europe",
+      "intro": "從巴黎鐵塔、倫敦塔橋到羅馬競技場，歐洲把兩千年的歷史與藝術濃縮在一座座可以步行的城市裡。",
+      "countries": [
+        "france",
+        "uk",
+        "italy"
+      ]
+    }
+  ]
 }

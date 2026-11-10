@@ -192,6 +192,7 @@ def head(title, desc, path, image=None, extra="", og_type="website", noindex=Fal
     <button class="nav-toggle" aria-expanded="false" aria-controls="nav" aria-label="選單"><span></span><span></span></button>
     <nav id="nav" class="nav">
       {''.join(f'<a href="/{c["slug"]}/">{E(c["name"])}</a>' for c in SITE['countries'] if c.get('nav'))}
+      {''.join(f'<a href="/{r["slug"]}/">{E(r["name"])}</a>' for r in SITE.get('regions', []))}
       <a href="/destinations/">全球目的地</a>
       <a href="/about/">關於</a>
     </nav>
@@ -392,6 +393,34 @@ def page_home(posts):
     write("/", h + foot())
 
 
+def page_region(r, posts):
+    """區域頁（例如歐洲）：把多個國家的城市集合在一頁。"""
+    cs = [c for c in SITE["countries"] if c["slug"] in r["countries"]]
+    mine = [p for p in posts if p["country"] in r["countries"]]
+    blocks, chips = "", ""
+    for c in cs:
+        for ci in c["cities"]:
+            cp = [p for p in mine if p["country"] == c["slug"] and p["city"] == ci["slug"]]
+            if not cp:
+                continue
+            url = f"/{c['slug']}/{ci['slug']}/"
+            chips += f'<a href="{url}">{E(ci["name"])}</a>'
+            blocks += f"""<section class="city-block">
+  <div class="section-head"><h2 class="section-title"><a href="{url}">{E(c['name'])}・{E(ci['name'])} <small>{E(ci['en'])}</small></a></h2><span class="muted">{len(cp)} 篇</span></div>
+  <div class="grid">{''.join(card(p) for p in cp)}</div>
+</section>"""
+    path = f"/{r['slug']}/"
+    crumbs = [("首頁", "/"), (r["name"], None)]
+    desc = f"{r['intro']}收錄{'、'.join(c['name'] for c in cs)}共 {len(mine)} 篇{r['name']}景點介紹。"
+    h = head(f"{r['name']}景點推薦｜{r['en']} 旅遊景點介紹", desc, path,
+             mine[0]["images"][0] if mine else None, jsonld(crumbs_ld(crumbs, path), item_list_ld(mine)))
+    h += f"""<section class="page-head wrap">{breadcrumbs(crumbs)}
+  <p class="kicker">{E(r['en'])}</p><h1>{E(r['name'])}景點</h1><p class="subtitle">{E(r['intro'])}</p>
+  <div class="chips">{chips}</div>
+</section><div class="wrap">{blocks}</div>"""
+    write(path, h + foot())
+
+
 def page_country(c, posts):
     mine = [p for p in posts if p["country"] == c["slug"]]
     cities = ""
@@ -487,6 +516,7 @@ def lastmod(ps):
 
 def sitemap(posts):
     urls = [("/", lastmod(posts)), ("/destinations/", lastmod(posts)), ("/about/", None), ("/disclosure/", lastmod(posts))]
+    urls += [(f"/{r['slug']}/", lastmod(posts)) for r in SITE.get("regions", [])]
     for c in SITE["countries"]:
         mine = [p for p in posts if p["country"] == c["slug"]]
         urls.append((f"/{c['slug']}/", lastmod(mine)))
@@ -542,6 +572,8 @@ def build():
     page_home(posts)
     for c in SITE["countries"]:
         page_country(c, posts)
+    for r in SITE.get("regions", []):
+        page_region(r, posts)
     page_destinations(posts)
     page_static(posts)
     sitemap(posts)
