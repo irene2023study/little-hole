@@ -343,7 +343,18 @@ def page_post(p, posts):
 
 
 def page_home(posts):
-    feat, rest = posts[0], posts[1:7]
+    # 首頁大圖：site.json 的 "featured"（文章 slug），沒設定就用最新一篇
+    feat = next((p for p in posts if p["slug"] == SITE.get("featured")), posts[0])
+    # 最新景點：依日期新到舊，但每個城市輪流取一篇，避免同一城市洗版
+    by_city = {}
+    for p in posts:
+        if p is not feat:
+            by_city.setdefault(p["city"], []).append(p)
+    rest, queues = [], [q for c, q in by_city.items() if c != feat["city"]] + [by_city.get(feat["city"], [])]
+    while len(rest) < 6 and any(queues):
+        for q in queues:
+            if q and len(rest) < 6:
+                rest.append(q.pop(0))
     countries = ""
     for c in SITE["countries"]:
         n = sum(1 for p in posts if p["country"] == c["slug"])
@@ -367,7 +378,7 @@ def page_home(posts):
   </div>
   <a class="hero-feature" href="{feat['url']}">
     <img src="{E(feat['images'][0]['src'])}" alt="{E(feat['images'][0].get('alt',''))}" fetchpriority="high" width="{feat['images'][0]['width']}" height="{feat['images'][0]['height']}">
-    <span class="hero-feature-label"><small>最新文章・{E(feat['_city']['name'])}</small>{E(feat['title'])}</span>
+    <span class="hero-feature-label"><small>{'精選' if SITE.get('featured') else '最新'}文章・{E(feat['_city']['name'])}</small>{E(feat['title'])}</span>
   </a>
 </section>
 <section class="wrap" id="latest">
